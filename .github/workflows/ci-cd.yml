@@ -40,7 +40,8 @@ jobs:
         run: |
           docker build -t actions-app:${{ github.sha}} .
           docker tag actions-app:${{ github.sha}} ${{ secrets.ECR_REPOSITORY_URI}}/actions-cidc:latest
- 
+          docker tag actions-app:${{ github.sha}} ${{ secrets.DOCKERHUB_USERNAME }}/actions-cicd:latest
+          
       # Trivy Scan
       - name: Trivy Scan
         run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image actions-app:${{ github.sha}}
@@ -72,3 +73,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # Push image to DockerHub
+      - name: Push image to DockerHub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/actions-cicd:latest
