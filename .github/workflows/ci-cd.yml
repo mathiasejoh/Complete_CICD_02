@@ -34,3 +34,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      # Docker Image Build
+      - name: Build Docker Image
+        run: |
+          docker build -t actions-app:${{ github.sha}} .
+
